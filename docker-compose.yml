@@ -1,0 +1,30 @@
+version: "3"
+services:
+    flyway:
+        image: flyway:test
+        build: .
+        links:
+            - mysql
+        environment:
+            DB_HOST: mysql
+            DB_PORT: 3306
+            DB_USER: root
+            DB_PWD: password
+            DATABASE: nyancat
+            WAIT_HOST: mysql
+            WAIT_PORT: 3306
+        volumes:
+            - ./test/sql:/home/app/sql
+
+    mysql:
+        image: mysql:5.6.35
+        environment:
+            MYSQL_DATABASE: nyancat
+            MYSQL_ROOT_PASSWORD: password
+        healthcheck:
+            test:
+                - CMD-SHELL
+                - mysqladmin ping --silent
+            interval: 1m30s
+            timeout: 10s
+            retries: 3
