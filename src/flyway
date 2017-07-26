@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC1090,SC2155
+set -o errexit
+set -o nounset
+set -o pipefail
+[[ -n "${TRACE+x}" ]] && set -o xtrace
+
+_SCRIPT_DIR="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
+
+source "$_SCRIPT_DIR"/logger.sh ""
+ENTER
+
+FLYWAY_DIR=$_SCRIPT_DIR
+FLYWAY_DL_DIR="$FLYWAY_DIR/flyway-$FLYWAY_VERSION"
+
+
+DEBUG "-------------------"
+DEBUG "FLYWAY_DL_DIR=${FLYWAY_DL_DIR}"
+DEBUG "SQL_DIR=${SQL_DIR:="$_SCRIPT_DIR"/../sql}"
+DEBUG "JAVA_DIR=${JAVA_DIR:="$_SCRIPT_DIR"/../java}"
+DEBUG "DB_HOST=${DB_HOST}"
+DEBUG "DB_PORT=${DB_PORT}"
+DEBUG "DATABASE=${DATABASE}"
+DEBUG "DB_USER=${DB_USER}"
+DEBUG "DB_PWD=${DB_PWD}"
+DEBUG "url=${url:=jdbc:mysql://"$DB_HOST":"$DB_PORT"/"$DATABASE"}"
+DEBUG "locations=${locations:=filesystem:$SQL_DIR,classpath:$JAVA_DIR}"
+DEBUG "-------------------"
+
+INFO "[Todo] flyway $*"
+
+"$FLYWAY_DL_DIR"/flyway \
+  -configFile="$FLYWAY_DIR"/flyway.conf \
+  -url="$url" \
+  -user="$DB_USER" \
+  -password="$DB_PWD" \
+  -locations="$locations" \
+  "$@"
+
+
+INFO "[Done]"
+EXIT

@@ -1,0 +1,11 @@
+LOCK TABLES `project` WRITE;
+/*!40000 ALTER TABLE `project` DISABLE KEYS */;
+INSERT INTO `project` VALUES (1,'project-test',1,'group-test',NULL,'2017-07-11 06:57:00','2017-07-11 06:57:00');
+/*!40000 ALTER TABLE `project` ENABLE KEYS */;
+UNLOCK TABLES;
+
+LOCK TABLES `project_member` WRITE;
+/*!40000 ALTER TABLE `project_member` DISABLE KEYS */;
+INSERT INTO `project_member` VALUES (1,123,5,'2017-07-11 06:57:00','2017-07-11 06:57:00');
+/*!40000 ALTER TABLE `project_member` ENABLE KEYS */;
+UNLOCK TABLES;

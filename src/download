@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC1090,SC2155
+set -o errexit
+set -o nounset
+set -o pipefail
+[[ -n "${TRACE+x}" ]] && set -o xtrace
+
+_SCRIPT_DIR="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
+
+source "$_SCRIPT_DIR"/logger.sh ""
+ENTER
+
+# FLYWAY_PLATFORM:
+#   macosx (default use)
+#   linux
+FLYWAY_PLATFORM=${1:-}
+FLYWAY_VERSION=${2:-4.2.0}
+FLYWAY_DIR="$_SCRIPT_DIR"
+FLYWAY_DL_DIR="$FLYWAY_DIR/flyway-$FLYWAY_VERSION"
+
+INFO "Clean: $FLYWAY_DL_DIR"
+rm -rf "$FLYWAY_DL_DIR"
+
+if [[ -z "$FLYWAY_PLATFORM" ]]; then
+    FLYWAY_TAR_FILE=flyway-commandline-$FLYWAY_VERSION.tar.gz
+else
+    FLYWAY_TAR_FILE=flyway-commandline-"$FLYWAY_VERSION"-"$FLYWAY_PLATFORM"-x64.tar.gz
+fi
+
+INFO "[Todo] curl -C- -L https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/$FLYWAY_VERSION/$FLYWAY_TAR_FILE -o $FLYWAY_DIR/$FLYWAY_TAR_FILE"
+
+curl -C- -L https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/"$FLYWAY_VERSION"/"$FLYWAY_TAR_FILE" -o "$FLYWAY_DIR"/"$FLYWAY_TAR_FILE"
+
+INFO "[Done] curl -C- -L https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/$FLYWAY_VERSION/$FLYWAY_TAR_FILE -o $FLYWAY_DIR/$FLYWAY_TAR_FILE"
+
+INFO "[Todo] tar -xzvf $FLYWAY_DIR/$FLYWAY_TAR_FILE -C $FLYWAY_DIR/"
+
+tar -xzvf "$FLYWAY_DIR"/"$FLYWAY_TAR_FILE" -C "$FLYWAY_DIR"/
+
+INFO "[Done] tar -xzvf $FLYWAY_DIR/$FLYWAY_TAR_FILE -C $FLYWAY_DIR/"
+
+EXIT
