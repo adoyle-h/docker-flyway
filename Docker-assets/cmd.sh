@@ -5,6 +5,6 @@ set -o nounset
 set -o pipefail
 [[ -n "${TRACE+x}" ]] && set -o xtrace
 
-./src/flyway info
-./src/flyway migrate
-./src/flyway info
+flyway info
+flyway migrate
+flyway info

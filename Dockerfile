@@ -32,5 +32,7 @@ RUN \
 COPY src/flyway $APP_DIR/src/flyway
 COPY src/flyway.conf $APP_DIR/src/flyway.conf
 
+RUN ln -s $APP_DIR/src/flyway /usr/local/bin/flyway
+
 ENTRYPOINT ["/opt/bin/entrypoint.sh"]
 CMD ["/opt/bin/cmd.sh"]
