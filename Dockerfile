@@ -2,7 +2,8 @@ FROM openjdk:8u131-jre-alpine
 
 # -------------- System Settings --------------
 
-RUN apk update && apk add --no-cache bash curl
+RUN until apk update; do sleep 1; done && \
+    apk add --no-cache bash curl
 
 # ------------ Application Settings ------------
 
@@ -31,6 +32,8 @@ RUN \
 
 COPY src/flyway $APP_DIR/src/flyway
 COPY src/flyway.conf $APP_DIR/src/flyway.conf
+
+RUN ln -s $APP_DIR/src/flyway /usr/local/bin/flyway
 
 ENTRYPOINT ["/opt/bin/entrypoint.sh"]
 CMD ["/opt/bin/cmd.sh"]

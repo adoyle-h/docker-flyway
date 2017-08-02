@@ -11,7 +11,7 @@ source "$CUR_FILE_DIR"/logger.sh ""
 ENTER
 
 INFO "[Todo] apk update"
-apk update
+until apk update; do sleep 1; done
 INFO "[Done] apk update"
 
 INFO "[Todo] apk add packages"

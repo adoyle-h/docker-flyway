@@ -5,7 +5,8 @@ set -o nounset
 set -o pipefail
 [[ -n "${TRACE+x}" ]] && set -o xtrace
 
-_SCRIPT_DIR="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
+_SCRIPT_PATH="$(realpath "$0")"
+_SCRIPT_DIR="$(dirname "$_SCRIPT_PATH")"
 
 source "$_SCRIPT_DIR"/logger.sh ""
 ENTER
