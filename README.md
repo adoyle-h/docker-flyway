@@ -12,6 +12,8 @@ dependency container *available*. Refer to the article "[Controlling startup ord
 
 - [Build Image](#build-image)
 - [Run Container](#run-container)
+    - [Entrypoint](#entrypoint)
+    - [Command](#command)
 - [Environments](#environments)
 - [flyway.conf](#flywayconf)
 - [Migration Files](#migration-files)
@@ -31,6 +33,19 @@ The build argument `FLYWAY_VERSION` is optional, which defaults to 4.2.0.
 Refer to the [`docker-compose.yml`](./docker-compose.yml).
 
 Execute `docker-compose up`.
+
+### Entrypoint
+
+The `ENTRYPOINT` locates at `/opt/bin/entrypoint.sh`. You could change the default behaviors by mounting your `entrypoint.sh` file, or use `--entrypoint` option with `docker` command.
+
+### Command
+
+The `CMD` locates at `/opt/bin/cmd.sh`. You could change the default behaviors by mounting your `cmd.sh` file, or overwrite it with `docker` command.
+
+Use [`docker-compose.yml`](./docker-compose.yml) for example: `docker-compose run flyway flyway info`
+
+`flyway` could be referenced in `$PATH`.
+
 
 ## Environments
 
